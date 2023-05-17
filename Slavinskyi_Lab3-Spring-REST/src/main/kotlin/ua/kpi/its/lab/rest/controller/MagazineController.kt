@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ua.kpi.its.lab.rest.dto.MagazineResponseDto
+import ua.kpi.its.lab.rest.dto.MagazineResponse
+import ua.kpi.its.lab.rest.dto.MagazineRequest
 import ua.kpi.its.lab.rest.exception.ResourceNotFoundException
 import javax.validation.Valid
 
@@ -22,36 +23,36 @@ public class MagazineController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MagazineResponseDto> getmagazineById(@PathVariable Long id) throws ResourceNotFoundException
+    public ResponseEntity<MagazineResponse> getmagazineById(@PathVariable Long id) throws ResourceNotFoundException
     {
-        MagazineResponseDto magazineResponseDto = magazineService . getMagazineById (id);
-        if (magazineResponseDto == null) {
+        MagazineResponse magazineResponseDto = magazineService . getMagazineById (id);
+        if (magazineResponse == null) {
             throw new ResourceNotFoundException ("Magazine with id " + id + " not found");
         }
-        return ResponseEntity.ok(magazineResponseDto);
+        return ResponseEntity.ok(magazineResponse);
     }
 
     @GetMapping("/")
-    open fun getAllHospitals(): ResponseEntity<MutableList<MagazineResponseDto?>?>? {
-        val magazineResponseDtos: kotlin.collections.List<MagazineResponseDto> = magazineService.getAllHospitals()
-        return ResponseEntity.ok<kotlin.collections.List<MagazineResponseDto>>(magazineResponseDtos)
+    open fun getAllHospitals(): ResponseEntity<MutableList<MagazineResponse?>?>? {
+        val magazineResponseDtos: kotlin.collections.List<MagazineResponse> = magazineService.getAllHospitals()
+        return ResponseEntity.ok<kotlin.collections.List<MagazineResponse>>(magazineResponseDtos)
     }
 
     @PostMapping("/")
-    fun createMagazine(@Valid @RequestBody magazineRequestDto: MagazineRequestDto?): ResponseEntity<MagazineResponseDto>? {
-        val hospitalResponseDto: MagazineResponseDto = magazimeService.createHospital(magazineRequestDto)
-        return ResponseEntity.status(HttpStatus.CREATED).body<MagazineResponseDto>(magazineResponseDto)
+    fun createMagazine(@Valid @RequestBody magazineRequestDto: MagazineRequest?): ResponseEntity<MagazineResponse>? {
+        val magazineResponse: MagazineResponse = magazimeService.createMagazine(magazineRequestDto)
+        return ResponseEntity.status(HttpStatus.CREATED).body<MagazineResponse>(magazineResponse)
     }
 
     @PutMapping("/{id}")
     @Throws(ResourceNotFoundException::class)
     fun updateMagazine(
         @PathVariable id: Long,
-        @Valid @RequestBody magazineRequestDto: MagazineRequestDto?
-    ): ResponseEntity<MagazineResponseDto>? {
-        val magazineResponseDto: MagazineResponseDto = magazineService.updateMagazine(id, magazineRequestDto)
+        @Valid @RequestBody magazineRequestDto: MagazineRequest?
+    ): ResponseEntity<MagazineResponse>? {
+        val magazineResponseDto: MagazineResponse = magazineService.updateMagazine(id, magazineRequestDto)
             ?: throw ResourceNotFoundException("Magazine with id $id not found")
-        return ResponseEntity.ok<MagazineResponseDto>(magazineResponseDto)
+        return ResponseEntity.ok<MagazineResponse>(magazineResponseDto)
     }
 
     @DeleteMapping("/{id}")
